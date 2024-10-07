@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
                 ('profile_image', models.ImageField(blank=True, null=True, upload_to='profile_images/')),
                 ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions')),
-                ('role', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.role')),
+                ('role', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='users.role')),
             ],
             options={
                 'verbose_name': 'user',

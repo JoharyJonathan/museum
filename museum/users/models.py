@@ -12,7 +12,7 @@ class Role(models.Model):
         return f"{self.role_name}"
     
 class CustomUser(AbstractUser):
-    role = models.ForeignKey(Role, on_delete=models.CASCADE)
+    role = models.ForeignKey(Role, on_delete=models.CASCADE, blank=True, null=True)
     profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
     
     def __str__(self):
