@@ -1,5 +1,4 @@
 <template>
-    <br><br><br>
     <section class="vh-100">
       <div class="container-fluid">
         <div class="row">
