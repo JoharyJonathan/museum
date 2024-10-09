@@ -47,7 +47,6 @@
 </script>
   
 <style scoped>
-  /* Styles propres au composant navbar */
   nav ul {
     list-style-type: none;
     padding: 0;

@@ -42,8 +42,41 @@
 
 <script>
     export default {
-        name: 'login-view'
-    }
+        name: 'login-view',
+        data() {
+            return {
+                email: '',
+                password: '',
+            };
+        },
+        methods: {
+            async login() {
+                try {
+                    const response = await fetch('http://localhost:8000/users/api/login/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            username: this.email,
+                            password: this.password
+                        })
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                        localStorage.setItem('access_token', data.access);
+                        localStorage.setItem('refresh_token', data.refresh);
+                        this.$router.push('/');
+                    } else {
+                        console.error(data);
+                    }
+                } catch (error) {
+                    console.error('Error during login: ', error);
+                }
+            }
+        }
+    };
 </script>
 
 <style>

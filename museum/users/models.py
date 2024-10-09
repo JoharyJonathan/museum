@@ -10,14 +10,19 @@ class Role(models.Model):
     
     def __str__(self):
         return f"{self.role_name}"
-    
+
 class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True, max_length=255)
     role = models.ForeignKey(Role, on_delete=models.CASCADE, blank=True, null=True)
     profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
     
-    def __str__(self):
-        return self.username
+    # Modifications pour utiliser l'email comme champ d'authentification
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']  # Rendre 'username' optionnel si besoin
     
+    def __str__(self):
+        return self.email  # Afficher l'email au lieu du username
+
 class AdminLogs(models.Model):
     action = models.CharField(max_length=255)
     entity = models.CharField(max_length=255)
@@ -25,7 +30,7 @@ class AdminLogs(models.Model):
     
     def __str__(self):
         return self.action
-    
+
 class Permissions(models.Model):
     role = models.ForeignKey(Role, on_delete=models.CASCADE)
     action = models.CharField(max_length=255)
