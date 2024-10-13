@@ -65,6 +65,8 @@
                     });
                     const data = await response.json();
                     if (response.ok) {
+                        console.log('Access token :', data.access);
+                        console.log('Refresh token :', data.refresh);
                         localStorage.setItem('access_token', data.access);
                         localStorage.setItem('refresh_token', data.refresh);
                         this.$router.push('/');
