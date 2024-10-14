@@ -29,13 +29,24 @@ const routes = [
   {
     path: '/profile',
     name: 'profile',
-    component: Profile
+    component: Profile,
+    meta: { requiresAuth: true }
   }
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes
+});
+
+// Verify authentification
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('access_token');
+  if (to.matched.some(record => record.meta.requiresAuth) && !token) {
+    next('/login');
+  } else {
+    next();
+  }
 });
 
 export default router;
