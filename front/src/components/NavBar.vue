@@ -31,7 +31,7 @@
                 <li><a class="dropdown-item" href="{% url 'watch_history' %}">History</a></li>
                 <li><a class="dropdown-item" href="{% url 'favorites-movies' %}">Favorites</a></li>
                 <li><a class="dropdown-item openmodal" href="#" data-toggle="modal" data-target="#myModal">Feed Back</a></li>
-                <li><a class="dropdown-item" href="{% url 'logout' %}">Log Out</a></li>
+                <li><button class="dropdown-item" @click="logout">Log Out</button></li>
               </ul>
             </li>
           </ul>
@@ -42,7 +42,14 @@
   
 <script>
   export default {
-    name: 'Navbar-view'
+    name: 'Navbar-view',
+    methods: {
+      logout() {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      this.$router.push('/login');
+    }
+    }
   };
 </script>
   
