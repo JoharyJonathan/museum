@@ -23,7 +23,7 @@
           <ul class="navbar-nav d-flex flex-row">
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="margin-right: 60px;">
-                Profile
+                <img :src="this.user.profile_image" alt="" class="rounded" style="width: 35px; height: 35px;">
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><router-link class="dropdown-item" to="/profile">View Profile</router-link></li>
@@ -41,8 +41,40 @@
 </template>
   
 <script>
+  import { jwtDecode } from 'jwt-decode';
+
   export default {
     name: 'Navbar-view',
+    data() {
+      return {
+        user: null
+      }
+    },
+    created() {
+      const token = localStorage.getItem('access_token');
+      console.log(token)
+
+      if(!token) {
+        console.error("No access token found in localstorage");
+        return;
+      }
+
+      try {
+        const decodedToken = jwtDecode(token);
+
+        const ImgUrl = decodedToken.profile_image ? `http://localhost:8000${decodedToken.profile_image}` : null;
+
+        this.user = {
+          username: decodedToken.username,
+          email: decodedToken.email,
+          profile_image: ImgUrl
+        };
+        console.log(decodedToken)
+        console.log(this.user.profile_image)
+      } catch (error) {
+        console.error("Error decoding token", error);
+      }
+    },
     methods: {
       logout() {
       localStorage.removeItem('access_token');

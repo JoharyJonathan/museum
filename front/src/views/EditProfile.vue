@@ -68,13 +68,17 @@
 
             try {
                 const decodedToken = jwtDecode(token);
+
+                const ImgUrl = decodedToken.profile_image ? `http://localhost:8000${decodedToken.profile_image}` : null;
+
                 this.user = {
                     id: decodedToken.user_id,
                     username: decodedToken.username,
                     email: decodedToken.email,
-                    profile_image: decodedToken.profile_image,
+                    profile_image: ImgUrl,
                 }
                 console.log("Id de l'user :" + this.user.id);
+                console.log(decodedToken.profile_image);
             } catch (error) {
                 console.error("Error decoding token", error);
             }
@@ -100,10 +104,16 @@
                 })
                 .then(response => {
                     console.log("Profile updated successfully", response.data);
+                    this.logoutUser();
                 })
                 .catch(error => {
                     console.error("Error updating profile", error);
                 });
+            },
+            logoutUser() {
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                this.$router.push('/login');
             }
         }
     }

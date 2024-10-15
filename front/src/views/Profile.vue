@@ -9,9 +9,9 @@
               <img :src="user?.profile_image || 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp'"
                 alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
                 style="width: 150px; z-index: 1">
-              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-dark text-body" data-mdb-ripple-color="dark" style="z-index: 1;">
+              <router-link to="/edit-profile" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-dark text-body" data-mdb-ripple-color="dark" style="z-index: 1; margin-top: 25px;">
                 Edit profile
-              </button>
+              </router-link>
             </div>
             <div class="ms-3" style="margin-top: 130px;">
               <h5>{{ user?.username }}</h5>
@@ -96,12 +96,16 @@
 
       try {
         const decodedToken = jwtDecode(token);
+
+        const ImgUrl = decodedToken.profile_image ? `http://localhost:8000${decodedToken.profile_image}` : null;
+
         this.user = {
           username: decodedToken.username,
           email: decodedToken.email,
-          profile_image: decodedToken.profile_image
+          profile_image: ImgUrl
         };
         console.log(decodedToken)
+        console.log(this.user.profile_image)
       } catch (error) {
         console.error("Error decoding token", error);
       }
