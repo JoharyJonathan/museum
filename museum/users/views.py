@@ -2,10 +2,13 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
+from rest_framework.generics import UpdateAPIView
 from django.contrib.auth import authenticate
+from django.shortcuts import get_object_or_404
 import logging
-from .serializers import UserSerializer, CustomTokenObtainPairSerializer
+from .serializers import UserSerializer, CustomTokenObtainPairSerializer, UpdateUserSerializer
+from .models import CustomUser
 
 logger = logging.getLogger(__name__)
 
@@ -46,11 +49,21 @@ class LoginView(APIView):
             })
         return Response({'error': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
     
-class UserProfileView(APIView):
-    permission_classes = [IsAuthenticated]
     
-    def get(self, request):
-        user = request.user
-        serializer = UserSerializer(user)
+class UpdateProfileView(UpdateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = UpdateUserSerializer
+    
+    def get_object(self):
+        user_id = self.kwargs.get('pk')
+        return get_object_or_404(CustomUser, id=user_id)
+    
+    def update(self, request, *args, **kwargs):
+        user = self.get_object()
+        serializer = self.get_serializer(user, data=request.data)
         
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

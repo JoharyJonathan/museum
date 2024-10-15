@@ -39,3 +39,26 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         print("Token data: ", token)
         
         return token
+    
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['profile_image']
+        
+class UpdateUserSerializer(serializers.ModelSerializer):
+    profile = UserProfileSerializer
+    
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'email', 'profile_image']
+        
+    def update(self, instance, validated_data):
+        instance.username = validated_data.get('username', instance.username)
+        instance.email = validated_data.get('email', instance.email)
+        
+        if 'profile_image' in validated_data:
+            instance.profile_image = validated_data['profile_image']
+            
+        instance.save()
+        
+        return instance

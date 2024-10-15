@@ -4,6 +4,7 @@ import About from './views/About.vue';
 import SignUp from './views/SignUp.vue';
 import Login from './views/Login.vue';
 import Profile from './views/Profile.vue';
+import EditProfile from './views/EditProfile.vue';
 
 const routes = [
   {
@@ -30,6 +31,12 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: Profile,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/edit-profile',
+    name: 'editprofile',
+    component: EditProfile,
     meta: { requiresAuth: true }
   }
 ];

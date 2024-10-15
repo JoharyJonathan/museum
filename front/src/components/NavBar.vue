@@ -27,7 +27,7 @@
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><router-link class="dropdown-item" to="/profile">View Profile</router-link></li>
-                <li><a class="dropdown-item" href="{% url 'profile-update' %}">Update Profile</a></li>
+                <li><router-link class="dropdown-item" to="/edit-profile">Update Profile</router-link></li>
                 <li><a class="dropdown-item" href="{% url 'watch_history' %}">History</a></li>
                 <li><a class="dropdown-item" href="{% url 'favorites-movies' %}">Favorites</a></li>
                 <li><a class="dropdown-item openmodal" href="#" data-toggle="modal" data-target="#myModal">Feed Back</a></li>
